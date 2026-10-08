@@ -1,0 +1,15 @@
+.vscode/**
+.vscode-test/**
+src/**
+test/**
+test-fixtures/**
+node_modules/**
+out/**
+dist/cli.js
+dist/selftest.js
+dist/**/*.map
+tsconfig.json
+esbuild.mjs
+test.ts
+.gitignore
+*.vsix

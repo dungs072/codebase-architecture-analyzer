@@ -1,0 +1,18 @@
+#app { padding: 0; }
+.chat-head { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+.chat-head .sub { margin-left: 6px; }
+#log { flex: 1; overflow: auto; padding: 12px 16px 24px; }
+.msg { margin: 10px 0; max-width: 900px; }
+.msg.user { background: var(--btn); border-radius: 6px; padding: 6px 10px; white-space: pre-wrap; }
+.msg.assistant { line-height: 1.55; }
+.msg.assistant h2, .msg.assistant h3, .msg.assistant h4, .msg.assistant h5 { font-size: 1.05em; margin: 14px 0 4px; }
+.msg.assistant table { border-collapse: collapse; }
+.msg.assistant td, .msg.assistant th { border: 1px solid var(--border); padding: 2px 6px; }
+.msg.error { color: var(--err); }
+.composer { display: flex; gap: 6px; padding: 8px 12px; border-top: 1px solid var(--border); }
+.composer textarea { flex: 1; resize: none; font: inherit; background: var(--input); color: var(--input-fg); border: 1px solid var(--border); border-radius: 4px; padding: 6px 8px; min-height: 38px; max-height: 160px; }
+.composer textarea:focus { outline: 1px solid var(--accent); }
+.suggest { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.suggest .chip { padding: 4px 10px; }
+.welcome { color: var(--muted); max-width: 700px; }
+.welcome h2 { color: var(--fg); }

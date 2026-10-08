@@ -1,0 +1,383 @@
+{
+  "name": "codebase-architecture-analyzer",
+  "displayName": "Codebase Architecture Analyzer",
+  "description": "Turns an unfamiliar codebase into an interactive, evidence-backed architecture map. Static analysis discovers facts; AI explains them.",
+  "version": "0.1.0",
+  "publisher": "sun-studio",
+  "license": "UNLICENSED",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "keywords": [
+    "architecture",
+    "dependency graph",
+    "call graph",
+    "csharp",
+    "typescript",
+    "unity",
+    "vcontainer"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "archAnalyzer.analyze",
+        "title": "Analyze Project",
+        "category": "Architecture",
+        "icon": "$(play)"
+      },
+      {
+        "command": "archAnalyzer.reanalyzeFull",
+        "title": "Re-analyze Project (Clear Cache)",
+        "category": "Architecture"
+      },
+      {
+        "command": "archAnalyzer.openGraph",
+        "title": "Open Architecture Map",
+        "category": "Architecture",
+        "icon": "$(type-hierarchy)"
+      },
+      {
+        "command": "archAnalyzer.search",
+        "title": "Search Architecture",
+        "category": "Architecture",
+        "icon": "$(search)"
+      },
+      {
+        "command": "archAnalyzer.inspectSymbol",
+        "title": "Inspect Symbol",
+        "category": "Architecture"
+      },
+      {
+        "command": "archAnalyzer.inspectAtCursor",
+        "title": "Inspect Symbol at Cursor",
+        "category": "Architecture"
+      },
+      {
+        "command": "archAnalyzer.showCallers",
+        "title": "Show Callers",
+        "category": "Architecture"
+      },
+      {
+        "command": "archAnalyzer.showCallees",
+        "title": "Show Callees",
+        "category": "Architecture"
+      },
+      {
+        "command": "archAnalyzer.showDependencies",
+        "title": "Show Dependencies",
+        "category": "Architecture"
+      },
+      {
+        "command": "archAnalyzer.showDependents",
+        "title": "Show Dependents",
+        "category": "Architecture"
+      },
+      {
+        "command": "archAnalyzer.findReferences",
+        "title": "Find References",
+        "category": "Architecture"
+      },
+      {
+        "command": "archAnalyzer.analyzeImpact",
+        "title": "Analyze Impact (What Could Break?)",
+        "category": "Architecture"
+      },
+      {
+        "command": "archAnalyzer.traceFeature",
+        "title": "Trace Feature Flow",
+        "category": "Architecture"
+      },
+      {
+        "command": "archAnalyzer.explainSymbol",
+        "title": "AI: Explain Symbol",
+        "category": "Architecture"
+      },
+      {
+        "command": "archAnalyzer.explainModule",
+        "title": "AI: Explain Module",
+        "category": "Architecture"
+      },
+      {
+        "command": "archAnalyzer.explainProject",
+        "title": "AI: Explain This Project",
+        "category": "Architecture",
+        "icon": "$(sparkle)"
+      },
+      {
+        "command": "archAnalyzer.onboarding",
+        "title": "AI: Teach Me This Project",
+        "category": "Architecture"
+      },
+      {
+        "command": "archAnalyzer.chat",
+        "title": "AI: Codebase Chat",
+        "category": "Architecture",
+        "icon": "$(comment-discussion)"
+      },
+      {
+        "command": "archAnalyzer.generateDocs",
+        "title": "Generate ARCHITECTURE.md",
+        "category": "Architecture"
+      },
+      {
+        "command": "archAnalyzer.setAnthropicKey",
+        "title": "Set Anthropic API Key",
+        "category": "Architecture"
+      },
+      {
+        "command": "archAnalyzer.createRulesFile",
+        "title": "Create Architecture Rules File",
+        "category": "Architecture"
+      },
+      {
+        "command": "archAnalyzer.openLocation",
+        "title": "Open Location",
+        "category": "Architecture"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "archAnalyzer",
+          "title": "Architecture",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "archAnalyzer": [
+        {
+          "id": "archAnalyzer.overview",
+          "name": "Overview"
+        },
+        {
+          "id": "archAnalyzer.modules",
+          "name": "Modules & Layers"
+        },
+        {
+          "id": "archAnalyzer.di",
+          "name": "Dependency Injection"
+        },
+        {
+          "id": "archAnalyzer.findings",
+          "name": "Findings"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "archAnalyzer.overview",
+        "contents": "No architecture model yet.\n[Analyze Project](command:archAnalyzer.analyze)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "archAnalyzer.analyze",
+          "when": "view == archAnalyzer.overview",
+          "group": "navigation@1"
+        },
+        {
+          "command": "archAnalyzer.openGraph",
+          "when": "view == archAnalyzer.overview",
+          "group": "navigation@2"
+        },
+        {
+          "command": "archAnalyzer.search",
+          "when": "view == archAnalyzer.overview",
+          "group": "navigation@3"
+        },
+        {
+          "command": "archAnalyzer.chat",
+          "when": "view == archAnalyzer.overview",
+          "group": "navigation@4"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "archAnalyzer.inspectSymbol",
+          "when": "viewItem == symbol",
+          "group": "1_inspect@1"
+        },
+        {
+          "command": "archAnalyzer.explainSymbol",
+          "when": "viewItem == symbol",
+          "group": "1_inspect@2"
+        },
+        {
+          "command": "archAnalyzer.analyzeImpact",
+          "when": "viewItem == symbol",
+          "group": "1_inspect@3"
+        },
+        {
+          "command": "archAnalyzer.showCallers",
+          "when": "viewItem == symbol",
+          "group": "2_nav@1"
+        },
+        {
+          "command": "archAnalyzer.showCallees",
+          "when": "viewItem == symbol",
+          "group": "2_nav@2"
+        },
+        {
+          "command": "archAnalyzer.showDependencies",
+          "when": "viewItem == symbol",
+          "group": "2_nav@3"
+        },
+        {
+          "command": "archAnalyzer.showDependents",
+          "when": "viewItem == symbol",
+          "group": "2_nav@4"
+        },
+        {
+          "command": "archAnalyzer.explainModule",
+          "when": "viewItem == module",
+          "group": "1_inspect@1"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "archAnalyzer.inspectAtCursor",
+          "when": "editorLangId == csharp || editorLangId == typescript || editorLangId == typescriptreact",
+          "group": "archAnalyzer@1"
+        },
+        {
+          "command": "archAnalyzer.analyzeImpact",
+          "when": "editorLangId == csharp || editorLangId == typescript || editorLangId == typescriptreact",
+          "group": "archAnalyzer@2"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "archAnalyzer.openLocation",
+          "when": "false"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Architecture Analyzer",
+      "properties": {
+        "archAnalyzer.exclude": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "**/node_modules/**",
+            "**/.git/**",
+            "**/dist/**",
+            "**/out/**",
+            "**/build/**",
+            "**/bin/**",
+            "**/obj/**",
+            "**/Library/**",
+            "**/Temp/**",
+            "**/Logs/**",
+            "**/UserSettings/**",
+            "**/PackageCache/**",
+            "**/library/**",
+            "**/temp/**",
+            "**/local/**",
+            "**/*.d.ts",
+            "**/*.min.js"
+          ],
+          "description": "Glob patterns excluded from analysis."
+        },
+        "archAnalyzer.maxFiles": {
+          "type": "number",
+          "default": 20000,
+          "description": "Maximum number of files discovered."
+        },
+        "archAnalyzer.analyzeOnStartup": {
+          "type": "boolean",
+          "default": false,
+          "description": "Analyze automatically when the workspace opens (uses the incremental cache)."
+        },
+        "archAnalyzer.reanalyzeOnSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Incrementally re-analyze when a source file is saved (only after a first analysis)."
+        },
+        "archAnalyzer.ai.provider": {
+          "type": "string",
+          "enum": [
+            "vscode-lm",
+            "anthropic"
+          ],
+          "enumDescriptions": [
+            "Use a language model provided by VS Code (e.g. GitHub Copilot). No API key needed.",
+            "Call the Anthropic API directly. Set the key with 'Architecture: Set Anthropic API Key'."
+          ],
+          "default": "vscode-lm",
+          "description": "AI provider used for explanations and chat."
+        },
+        "archAnalyzer.ai.vscodeModelFamily": {
+          "type": "string",
+          "default": "",
+          "description": "Preferred VS Code LM model family (e.g. 'claude-sonnet-4', 'gpt-4o'). Empty = first available."
+        },
+        "archAnalyzer.ai.anthropicModel": {
+          "type": "string",
+          "default": "claude-opus-5-5",
+          "description": "Anthropic model id."
+        },
+        "archAnalyzer.ai.effort": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ],
+          "default": "medium",
+          "description": "Anthropic effort level (controls thinking depth and token spend)."
+        },
+        "archAnalyzer.smells.godObjectDependencies": {
+          "type": "number",
+          "default": 12,
+          "description": "Outgoing type dependencies above which a class is flagged as a possible God Object."
+        },
+        "archAnalyzer.smells.godObjectMethods": {
+          "type": "number",
+          "default": 30,
+          "description": "Method count above which a class is flagged as a possible God Object."
+        },
+        "archAnalyzer.smells.couplingThreshold": {
+          "type": "number",
+          "default": 8,
+          "description": "Outgoing dependencies above which excessive coupling is reported."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build -- --production",
+    "build": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run build && node dist/selftest.js",
+    "test:integration": "npm run build && node test/runIntegration.js",
+    "package": "npx @vscode/vsce package --no-dependencies"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.132.0",
+    "cytoscape": "^3.30.0",
+    "typescript": "^5.6.0",
+    "yaml": "^2.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "~1.90.0",
+    "@vscode/test-electron": "^3.1.0",
+    "esbuild": "^0.24.0"
+  }
+}
